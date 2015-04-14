@@ -21,7 +21,7 @@ func main() {
 
 	r := gin.Default()
 	r.Use(CORSMiddleware())
-	r.Use(static.Serve(*storage))
+	r.Use(static.Serve("/", static.LocalFile(*storage, false)))
 
 	r.POST("/files", CreateAttachment)
 
@@ -118,7 +118,7 @@ func CORSMiddleware() gin.HandlerFunc {
 			"Access-Control-Allow-Headers",
 			"Content-Type, Content-Length, Accept-Encoding, Content-Range, Content-Disposition, Authorization")
 		if c.Request.Method == "OPTIONS" {
-			c.Abort(200)
+			c.AbortWithStatus(200)
 			return
 		}
 		// c.Next()
